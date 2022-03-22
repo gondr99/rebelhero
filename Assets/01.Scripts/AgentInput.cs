@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static Define;
+
+// https://github.com/gondr99/2dShooter.git
 
 public class AgentInput : MonoBehaviour
 {
@@ -19,8 +22,7 @@ public class AgentInput : MonoBehaviour
     {
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = 0;
-        //여긴 매우 안좋은 코드이니 바꿔야 한다.
-        Vector2 mouseInWorldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        Vector2 mouseInWorldPos = MainCam.ScreenToWorldPoint(mousePos);
         OnPointerPositionChanged?.Invoke(mouseInWorldPos);
     }
 
