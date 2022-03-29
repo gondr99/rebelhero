@@ -14,7 +14,7 @@ public class TorchAnimation : MonoBehaviour
     [SerializeField] private float _timeRandomness;
 
     private float _baseIntensity;
-    private float _baseTime = 0.5f;
+    private float _baseTime = 1f;
     private float _baseRadius;
 
     private Light2D _light;
@@ -26,17 +26,19 @@ public class TorchAnimation : MonoBehaviour
         _baseRadius = _light.pointLightOuterRadius;
     }
 
-    private void Start()
+    private void OnEnable()
     {
         ShakeLight();
     }
-    //방과후를 
+
     private void ShakeLight()
-    {
+    {        
         //닷트윈 시퀀스를 이용해서 여기서 한번 횟불을 흔들꺼야
         float targetIntensity = _baseIntensity + Random.Range(-_intensityRandomness, _intensityRandomness);
         float targetTime = _baseTime + Random.Range(-_timeRandomness, _timeRandomness);
 
+        if (!gameObject.activeSelf)
+            return;
 
         Sequence seq = DOTween.Sequence();
         seq.Append(DOTween.To(
@@ -49,7 +51,13 @@ public class TorchAnimation : MonoBehaviour
         //반지름도 흔들고 싶다면 여기도 작성해보자.
         if (_changeRadius)
         {
-            //seq.Append()
+            float targetRadius = _baseRadius + Random.Range(-_radiusRandomness, _radiusRandomness);
+            seq.Join(
+                DOTween.To(
+                    () => _light.pointLightOuterRadius, 
+                    v => _light.pointLightOuterRadius = v, 
+                    targetRadius, 
+                    targetTime));
         }
 
         seq.AppendCallback(() => ShakeLight());
