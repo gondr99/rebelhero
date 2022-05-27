@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99bf5bbbaed79c3428e8d271af104f72, type: 3}
+  m_Name: ChortBullet
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 5724181391224122996, guid: af62efc099398ca49a8aebe93ea33410, type: 3}
+  damage: 1
+  bulletSpeed: 5
+  friction: 0
+  explosionRadius: 2
+  sprite: {fileID: -149992377141870456, guid: 83a24a3bb3b387d4f9f98dba00e17f27, type: 3}
+  animatorController: {fileID: 9100000, guid: 7c0caf7c77ca8794c8fb526428e74b38, type: 2}
+  bounce: 0
+  goThroughHit: 0
+  isRayCast: 0
+  impactObstaclePrefab: {fileID: 7041647265606666474, guid: 45755535c2380204ba1850c489e6599c, type: 3}
+  impactEnemyPrefab: {fileID: 7041647265606666474, guid: 45755535c2380204ba1850c489e6599c, type: 3}
+  knockBackPower: 5
+  knockBackDelay: 0.3
+  bulletMaterial: {fileID: 2100000, guid: 17737b50cbfe8104e8b7279a66c8bf61, type: 2}
+  isCharging: 1
+  lifeTime: 2

@@ -8,6 +8,7 @@ public class WeaponDataSO : ScriptableObject
     public GameObject prefab;
 
     //총알 데이터가 있어야해 
+    public BulletDataSO bulletData;
 
     [Range(0, 999)] public int ammoCapacity = 100; //탄창 크기
     public bool automaticFire; //연사 가능하냐?

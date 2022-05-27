@@ -1,28 +1,61 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using static Define;
 
-// https://github.com/gondr99/2dShooter.git
-
-public class AgentInput : MonoBehaviour
+public class AgentInput : MonoBehaviour, IAgentInput
 {
-    public UnityEvent<Vector2> OnMovementKeyPress;
-    public UnityEvent<Vector2> OnPointerPositionChanged;
+    [field: SerializeField] public UnityEvent<Vector2> OnMovementKeyPress { get; set; }
+    [field: SerializeField] public UnityEvent<Vector2> OnPointerPositionChanged { get; set; }
 
     //´Ü¹ßÇü ÃÑ, 
-    public UnityEvent OnFireButtonPress;
-    public UnityEvent OnFireButtonRelease;
+    [field: SerializeField]  public UnityEvent OnFireButtonPress { get; set; }
+    [field: SerializeField] public UnityEvent OnFireButtonRelease { get; set; }
 
     private bool _fireButtonDown = false;
+
+    public UnityEvent OnReloadButtonPress;
+
+    [field: SerializeField] public UnityEvent OnDropButtonPress { get; set; }
+
+    public UnityEvent<bool> OnNextWeaponPress;
 
     private void Update()
     {
         GetMovementInput();
         GetPointerInput();
         GetFireInput();
+        GetReloadInput();
+
+        GetDropInput();
+        GetChangeInput();
+    }
+
+    private void GetChangeInput()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            OnNextWeaponPress?.Invoke(false);
+        }else if(Input.GetKeyDown(KeyCode.Q))
+        {
+            OnNextWeaponPress?.Invoke(true);
+        }
+    }
+
+    private void GetDropInput()
+    {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            OnDropButtonPress?.Invoke();
+        }
+    }
+
+    private void GetReloadInput()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            OnReloadButtonPress?.Invoke();
+        }
     }
 
     private void GetFireInput()

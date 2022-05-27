@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ChortController
+  m_Controller: {fileID: 9100000, guid: eafe995d67a60234eacecd34b353398a, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 90b75a1d2507d5b4091956559b01d2f3, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 99ba45f388f0a994e9f4666b34a5668e, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: ac9cc08ac61a8f9488102faf7798ea8c, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 98075bc32c781654ea8853896448cde1, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 6c3db9381161479419e9f465427b2562, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 97922569e3cc6b74a9696f51c1438e31, type: 2}
