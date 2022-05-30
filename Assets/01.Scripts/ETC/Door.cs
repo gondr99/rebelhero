@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using static Define;
 
 public class Door : MonoBehaviour
 {
@@ -10,6 +9,8 @@ public class Door : MonoBehaviour
     private bool _isOpen = false;
 
     private AudioSource _audioSource;
+    
+    public RoomType nextRoomType { get; set; }
 
     private void Awake()
     {

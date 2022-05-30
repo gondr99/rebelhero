@@ -6,21 +6,21 @@ public class TextureParticleManager : MonoBehaviour
 {
     public static TextureParticleManager Instance;
     private MeshParticleSystem _meshParticleSystem;
-    private ImpactMeshSystem _impactMeshSystem;
+    //private ImpactMeshSystem _impactMeshSystem;
 
     private List<Particle> _bloodList;
     private List<Particle> _shellList;
-    private List<Impact> _impactList;
+    //private List<Impact> _impactList;
 
     private void Awake()
     {
         _meshParticleSystem = GetComponent<MeshParticleSystem>();
-        _impactMeshSystem = GameObject.Find("ImpactMesh").GetComponent<ImpactMeshSystem>();
+        //_impactMeshSystem = GameObject.Find("ImpactMesh").GetComponent<ImpactMeshSystem>();
         Instance = this;
         _bloodList = new List<Particle>();
         _shellList = new List<Particle>();
 
-        _impactList = new List<Impact>();
+        //_impactList = new List<Impact>();
     }
 
     private void Update()
@@ -49,25 +49,25 @@ public class TextureParticleManager : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < _impactList.Count; i++)
-        {
-            Impact impact = _impactList[i];
-            impact.Update();
-            if (impact.IsComplete == true)
-            {
-                _impactList.RemoveAt(i);
-                i--;
-            }
-        }
+        //for (int i = 0; i < _impactList.Count; i++)
+        //{
+        //    Impact impact = _impactList[i];
+        //    impact.Update();
+        //    if (impact.IsComplete == true)
+        //    {
+        //        _impactList.RemoveAt(i);
+        //        i--;
+        //    }
+        //}
     }
 
-    public void SpawnImpact(Vector3 pos, int idx, float time)
-    {
-        int totalSheet = _impactMeshSystem.GetTotalFrame(idx);
-        Vector3 quadSize = new Vector3(0.8f, 0.8f);
-        float rot = Random.Range(0, 359f);
-        _impactList.Add(new Impact(_impactMeshSystem, pos, rot, quadSize, true, idx, totalSheet, time));
-    }
+    //public void SpawnImpact(Vector3 pos, int idx, float time)
+    //{
+    //    int totalSheet = _impactMeshSystem.GetTotalFrame(idx);
+    //    Vector3 quadSize = new Vector3(0.8f, 0.8f);
+    //    float rot = Random.Range(0, 359f);
+    //    _impactList.Add(new Impact(_impactMeshSystem, pos, rot, quadSize, true, idx, totalSheet, time));
+    //}
 
     public void SpawnShell(Vector3 pos, Vector3 dir)
     {
