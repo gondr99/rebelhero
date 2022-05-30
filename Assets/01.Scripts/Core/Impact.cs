@@ -22,7 +22,8 @@ public class Impact
     }
 
 
-    public Impact(ImpactMeshSystem meshSystem, Vector3 position, float rotation, Vector3 quadSize, bool skew, int impactIdx, int total, float time)
+    public Impact(ImpactMeshSystem meshSystem, Vector3 position, float rotation,
+        Vector3 quadSize, bool skew, int impactIdx, int total, float time)
     {
         
         _meshSystem = meshSystem;
@@ -39,7 +40,7 @@ public class Impact
         _currentIdx = 0;
         _isComplete = false;
 
-        _quadIndex = meshSystem.AddQuad(_position, _rotation, _quadSize, true, impactIdx, 0);
+        _quadIndex = meshSystem.AddQuad(_position, _rotation, _quadSize, _skew, impactIdx, 0);
     }
 
     public void Update()

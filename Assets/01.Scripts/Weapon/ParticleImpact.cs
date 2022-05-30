@@ -15,6 +15,7 @@ public class ParticleImpact : ImpactScript
     public override void SetPositionAndRotation(Vector3 pos, Quaternion rot)
     {
         base.SetPositionAndRotation(pos, rot);
+        StartCoroutine(DisableCoroutine());
     }
 
     IEnumerator DisableCoroutine()

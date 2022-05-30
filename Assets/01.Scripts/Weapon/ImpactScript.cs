@@ -30,7 +30,7 @@ public class ImpactScript : PoolableMono
 
         if (_audioSource != null && _audioSource.clip != null)
         {
-            //_audioSource.Play();
+            _audioSource.Play();
         }
     }
 }

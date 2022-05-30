@@ -9,7 +9,7 @@ public class EnemyMeleeAttack : EnemyAttack
         if (_waitBeforeNextAttack == false)
         {
             _enemyBrain.SetAttackState(true);
-            AttackFeedback?.Invoke();
+            
             IHittable hittable = GetTarget().GetComponent<IHittable>();
             AttackFeedback?.Invoke();
             hittable?.GetHit(damage, gameObject);
