@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -59,6 +60,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    [Header("스테이지 데이터들")]
+    public List<RoomListSO> stages;
+
     private void Awake()
     {
         if (Instance != null)
@@ -76,6 +80,11 @@ public class GameManager : MonoBehaviour
         Instantiate(_textureParticleManagerPrefab, transform.parent);
 
         UIManager.Instance = new UIManager(); //UI 매니저 생성
+
+        RoomManager.Instance = new RoomManager(); //룸매니저 생성
+        int bossCnt = Random.Range(8, 10);
+        RoomManager.Instance.InitStage(stages[0], bossCnt); //0 스테이지부터 로딩
+        
 
         SetCursorIcon();
         CreatePool();

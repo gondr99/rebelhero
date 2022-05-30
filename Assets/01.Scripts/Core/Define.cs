@@ -37,5 +37,13 @@ public class Define
         Coin
     }
 
+    public enum RoomType
+    {
+        Monster,
+        Trap,
+        Heal,
+        Store,
+        Boss
+    }
     
 }

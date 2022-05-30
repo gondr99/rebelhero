@@ -6,6 +6,7 @@ public class Room : MonoBehaviour
 {
     protected List<EnemySpawner> _spawnerList;
     protected List<Door> _doorList;
+    public List<Door> DoorList { get => _doorList; }
 
     [SerializeField]
     protected bool _roomCleared = false;

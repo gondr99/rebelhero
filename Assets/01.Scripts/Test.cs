@@ -11,11 +11,11 @@ public class Test : MonoBehaviour
             for(int i = 0; i< 5000; i++)
                 MakeRandomImpact();
         }
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            for (int i = 0; i < 5000; i++)
-                MakeRandomMeshImpact();
-        }
+        //if (Input.GetKeyDown(KeyCode.N))
+        //{
+        //    for (int i = 0; i < 5000; i++)
+        //        MakeRandomMeshImpact();
+        //}
     }
 
     private void MakeRandomImpact()
@@ -28,10 +28,10 @@ public class Test : MonoBehaviour
 
     }
 
-    private void MakeRandomMeshImpact()
-    {
-        float x = Random.Range(-10f, 10f);
-        float y = Random.Range(-5f, 5f);
-        TextureParticleManager.Instance.SpawnImpact(new Vector3(x, y), 1, 0.3f);
-    }
+    //private void MakeRandomMeshImpact()
+    //{
+    //    float x = Random.Range(-10f, 10f);
+    //    float y = Random.Range(-5f, 5f);
+    //    TextureParticleManager.Instance.SpawnImpact(new Vector3(x, y), 1, 0.3f);
+    //}
 }

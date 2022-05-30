@@ -18,15 +18,15 @@ public class TestImpact : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            for (int i = 0; i < 6000; i++)
-            {
-                Vector3 pos = Random.insideUnitCircle * 5f;
-                TextureParticleManager.Instance.SpawnImpact(pos, 3, 0.6f);
+        //if (Input.GetKeyDown(KeyCode.I))
+        //{
+        //    for (int i = 0; i < 6000; i++)
+        //    {
+        //        Vector3 pos = Random.insideUnitCircle * 5f;
+        //        TextureParticleManager.Instance.SpawnImpact(pos, 3, 0.6f);
                 
-                //impact.SetPositionAndRotation(pos, Quaternion.identity);
-            }
-        }
+        //        //impact.SetPositionAndRotation(pos, Quaternion.identity);
+        //    }
+        //}
     }
 }
