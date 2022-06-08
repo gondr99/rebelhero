@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -11,29 +10,39 @@ public class RoomManager
 
     private int _roomCnt = 0; //현재 완료한 방의 수
     private int _bossCnt = 0;
-    private RoomListSO _roomList;    
+    private RoomListSO _roomList;
 
+    
     public void InitStage(RoomListSO listSo, int bossCnt)
     {
         _roomList = listSo;
         _bossCnt = bossCnt;
         _roomCnt = 0;
     }
+    public Room LoadStartRoom()
+    {
+        return LoadNextRoom(RoomType.Start);
+    }
 
     public Room LoadNextRoom(RoomType type)
     {
         Room roomPrefab = LoadRandomRoom(type);
-        
         Room room = GameObject.Instantiate(roomPrefab, null);
-        
-        if(room.DoorList.Count == 1) //문이 한개밖에 없으면 무조건 몬스터방으로 연결
+        SetRoomDoorDestination(room);
+        return room;
+    }
+    //방의 문을 연결해주는 함수
+    public void SetRoomDoorDestination(Room room)
+    {
+        if (room.DoorList.Count == 1) //문이 한개밖에 없으면 무조건 몬스터방으로 연결
         {
             room.DoorList[0].nextRoomType = IsABossRoom();
-        }else if(room.DoorList.Count >= 2)
+        }
+        else if (room.DoorList.Count >= 2)
         {
             room.DoorList[0].nextRoomType = IsABossRoom();
 
-            for(int i = 1; i < room.DoorList.Count; i++)
+            for (int i = 1; i < room.DoorList.Count; i++)
             {
                 room.DoorList[i].nextRoomType = GetSpecialRoom();
             }
@@ -41,7 +50,6 @@ public class RoomManager
 
         _roomCnt++;
 
-        return room;
     }
 
     private RoomType IsABossRoom()

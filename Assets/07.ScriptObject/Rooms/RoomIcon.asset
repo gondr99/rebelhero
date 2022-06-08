@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8669646bddd444c47a2c221894ac4776, type: 3}
+  m_Name: RoomIcon
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 2873678827337113250, guid: e816d75986847a54192e20f065f1fef2, type: 3}
+  - {fileID: -4644512458014540203, guid: e816d75986847a54192e20f065f1fef2, type: 3}
+  - {fileID: 7965247267513438227, guid: e816d75986847a54192e20f065f1fef2, type: 3}
+  - {fileID: 7761195995680752984, guid: e816d75986847a54192e20f065f1fef2, type: 3}
+  - {fileID: -3969112096202578439, guid: e816d75986847a54192e20f065f1fef2, type: 3}

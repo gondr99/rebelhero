@@ -4,6 +4,7 @@ public class EnemyAnimation : AgentAnimation
 {
     protected EnemyAIBrain _enemyAIBrain;
     protected readonly int _attackHashStr = Animator.StringToHash("Attack");
+    protected readonly int _jumpdownHashStr = Animator.StringToHash("Jumpdown");
 
     protected override void ChildAwake()
     {
@@ -20,4 +21,8 @@ public class EnemyAnimation : AgentAnimation
         _agentAnimator.SetTrigger(_attackHashStr);
     }
 
+    public void PlayJumpdownAnimation()
+    {
+        _agentAnimator.SetTrigger(_jumpdownHashStr);
+    }
 }

@@ -9,13 +9,27 @@ public class Door : MonoBehaviour
     private bool _isOpen = false;
 
     private AudioSource _audioSource;
+
+    [SerializeField]
+    private RoomIconSO _iconSo;
+    private SpriteRenderer _iconSprite;
     
-    public RoomType nextRoomType { get; set; }
+    [SerializeField]
+    private RoomType _nextRoom;
+    public RoomType nextRoomType { 
+        get => _nextRoom; 
+        set {
+            _nextRoom = value;
+            _iconSprite.sprite = _iconSo.sprites[(int)value];
+        } 
+    }
+
 
     private void Awake()
     {
         _openTrm = transform.Find("Open");
         _closeTrm = transform.Find("Closed");
+        _iconSprite = transform.Find("Category/Icon").GetComponent<SpriteRenderer>();
         _audioSource = GetComponent<AudioSource>();
     }
 
@@ -25,6 +39,7 @@ public class Door : MonoBehaviour
         if (_isOpen)
         {
             //다음방으로 넘어가는 루틴 필요
+            GameManager.Instance.LoadNextRoom(nextRoomType);
         }
     }
 

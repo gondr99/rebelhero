@@ -7,9 +7,12 @@ public class AttackAction : AIAction
     public override void TakeAction()
     {
         _aIMovementData.direction = Vector2.zero;
-        _aIMovementData.pointOfInterest = _enemyBrain.target.transform.position;
+        
+        if(_aIActionData.attack == false)
+        {
+            _enemyBrain.Attack();
+            _aIMovementData.pointOfInterest = _enemyBrain.target.transform.position;
+        }
         _enemyBrain.Move(_aIMovementData.direction, _aIMovementData.pointOfInterest);
-        //_aIActionData.attack = true;
-        _enemyBrain.Attack();
     }
 }

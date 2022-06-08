@@ -12,6 +12,8 @@ public class ItemDropper : MonoBehaviour
 
     [SerializeField]
     private bool _dropEffect = false; //¡°«Œ ¿Ã∆Â∆Æ 
+    [SerializeField]
+    private float _dropPower = 2f;
 
     [SerializeField]
     [Range(0, 1)]
@@ -33,9 +35,11 @@ public class ItemDropper : MonoBehaviour
             PoolableMono resource = PoolManager.Instance.Pop(_dropTable.dropList[index].itemPrefab.name);
             resource.transform.position = transform.position;
 
+            Vector3 offset = Random.insideUnitCircle;
+
             if (_dropEffect)
             {
-                resource.transform.DOJump(transform.position, 1f, 1, 0.3f);
+                resource.transform.DOJump(transform.position + offset, _dropPower, 1, 0.3f);
             }
         }
     }

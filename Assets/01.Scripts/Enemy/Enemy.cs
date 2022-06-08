@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 public class Enemy : PoolableMono, IHittable, IAgent, IKnockBack
 {
     [SerializeField]
-    private EnemyDataSO _enemyData;
+    protected EnemyDataSO _enemyData;
     public EnemyDataSO EnemyData
     {
         get => _enemyData;
@@ -17,12 +17,12 @@ public class Enemy : PoolableMono, IHittable, IAgent, IKnockBack
     public int Health { get; private set; }
     public Vector3 _hitPoint { get; private set; }
 
-    private EnemyAttack _enemyAttack;
-    private bool _isDead = false;
+    protected EnemyAttack _enemyAttack;
+    protected bool _isDead = false;
 
     //차후 넉백 처리를 위한 에이전트 무브먼트 가져오기
-    private AgentMovement _agentMovement;
-    private EnemyAnimation _enemyAnimation;
+    protected AgentMovement _agentMovement;
+    protected EnemyAIBrain _enemyBrain;
 
     [field: SerializeField] public UnityEvent OnGetHit { get; set; }
     [field: SerializeField] public UnityEvent OnDie { get; set; }
@@ -30,21 +30,25 @@ public class Enemy : PoolableMono, IHittable, IAgent, IKnockBack
     
 
     public bool IsEnemy => true;
-    
 
     [SerializeField]
-    private bool _isActive = false;
+    protected bool _isActive = false;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _agentMovement = GetComponent<AgentMovement>();
-        _enemyAnimation = GetComponentInChildren<EnemyAnimation>();
+        _enemyBrain = GetComponent<EnemyAIBrain>();
 
         _enemyAttack = GetComponent<EnemyAttack>();
         _enemyAttack.attackDelay = _enemyData.attackDelay;
     }
 
-    public void PerformAttack()
+    protected void Start()
+    {
+        Health = _enemyData.maxHealth;
+    }
+
+    public virtual void PerformAttack()
     {
         if (!_isDead && _isActive)
         {
@@ -53,7 +57,7 @@ public class Enemy : PoolableMono, IHittable, IAgent, IKnockBack
         }
     }
 
-    public void GetHit(int damage, GameObject damageDealer)
+    public virtual void GetHit(int damage, GameObject damageDealer)
     {
         if (_isDead) return;
 
@@ -97,12 +101,6 @@ public class Enemy : PoolableMono, IHittable, IAgent, IKnockBack
         _enemyAttack.Reset(); //처음시작했을 때 공격 쿨타임 돌아가게
         _agentMovement.ResetKnockBackParam();
         
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        Health = _enemyData.maxHealth;
     }
 
     public void Die()

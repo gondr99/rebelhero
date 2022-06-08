@@ -17,6 +17,7 @@ public class Room : MonoBehaviour
         get => _startPosTrm.position;
     }
 
+    [SerializeField]
     private int _closedPortalCount;
     //플레이어가 룸에 들어왔을때 시작되는 매서드
     public void ActiveRoom()
@@ -24,11 +25,12 @@ public class Room : MonoBehaviour
         _spawnerList.ForEach(x => x.ActivatePortalSensor()); //포탈센서 활성화
     }
 
-    protected virtual void Awake()
+    protected void Awake()
     {
         _spawnerList = new List<EnemySpawner>();
         transform.Find("Portals").GetComponentsInChildren<EnemySpawner>(_spawnerList);
         _closedPortalCount = 0;
+        
         foreach (EnemySpawner es in _spawnerList)
         {
             //포탈이 닫혔을 때 해줄 일을 기록
@@ -52,7 +54,6 @@ public class Room : MonoBehaviour
     {
         //문열고 다음방 만들어주고 등 처리
         OpenAllDoor();
-
     }
 
     protected void OpenAllDoor()

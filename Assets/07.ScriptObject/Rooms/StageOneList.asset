@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7c7b0c710ce1b849b06e192c82b9ca5, type: 3}
   m_Name: StageOneList
   m_EditorClassIdentifier: 
+  startRooms:
+  - {fileID: 2120448120268649233, guid: 5ddc5b05f27369e4e90f7c6f2fee53d3, type: 3}
   monsterRooms: []
   trapRooms:
   - {fileID: 2120448120268649233, guid: 5ddc5b05f27369e4e90f7c6f2fee53d3, type: 3}

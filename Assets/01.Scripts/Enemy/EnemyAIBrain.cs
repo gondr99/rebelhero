@@ -14,6 +14,7 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
 
     public AIState currentState;
     private AIActionData _aiActionData;
+    public AIActionData AIActionData => _aiActionData;
 
     public Transform basePosition = null;
 

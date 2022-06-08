@@ -23,9 +23,7 @@ public class Resource : PoolableMono
 
     public void PickUpResource()
     {
-        //숫자 띄워주자.
-        PopupText popupText = PoolManager.Instance.Pop("PopupText") as PopupText;
-        popupText?.Setup(ResourceData.GetAmount(), transform.position + new Vector3(0, 0.5f, 0), false, ResourceData.popupTextColor);
+        
         StartCoroutine(DestroyCoroutine());
     }
 

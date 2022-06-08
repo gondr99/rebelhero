@@ -1,9 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
+using static Define;
 
 public class GameManager : MonoBehaviour
 {
@@ -63,6 +62,8 @@ public class GameManager : MonoBehaviour
     [Header("스테이지 데이터들")]
     public List<RoomListSO> stages;
 
+    private Room _currentRoom = null;
+
     private void Awake()
     {
         if (Instance != null)
@@ -84,7 +85,21 @@ public class GameManager : MonoBehaviour
         RoomManager.Instance = new RoomManager(); //룸매니저 생성
         int bossCnt = Random.Range(8, 10);
         RoomManager.Instance.InitStage(stages[0], bossCnt); //0 스테이지부터 로딩
-        
+
+        //최초 생성된 룸 가져올 일이 있다면
+        _currentRoom = GameObject.FindObjectOfType<Room>();
+        if (_currentRoom == null)
+        {
+            //생성된게 없으면 생성
+            Room room = RoomManager.Instance.LoadStartRoom();
+            ChangeRoom(room);
+        }else
+        {
+            //이미 생성되어 있는 룸이 있다면 셋팅
+            PlayerTrm.position = _currentRoom.StartPosition;
+            RoomManager.Instance.SetRoomDoorDestination(_currentRoom);
+            _currentRoom.ActiveRoom();
+        }
 
         SetCursorIcon();
         CreatePool();
@@ -103,5 +118,25 @@ public class GameManager : MonoBehaviour
         Cursor.SetCursor(cursorTexture,
             new Vector2(cursorTexture.width / 2f, cursorTexture.height / 2f),
             CursorMode.Auto);
+    }
+
+    public void LoadNextRoom(RoomType type)
+    {
+        Room room = RoomManager.Instance.LoadNextRoom(type);
+        //여기엔 화면 전환 장치가 필요하다.
+
+        ChangeRoom(room);
+    }
+
+    //새로운 방으로 교체
+    private void ChangeRoom(Room newRoom)
+    {
+        if(_currentRoom != null)
+            Destroy(_currentRoom.gameObject);
+
+        newRoom.transform.position = Vector3.zero;
+        PlayerTrm.position = newRoom.StartPosition;
+        _currentRoom = newRoom;
+        _currentRoom.ActiveRoom(); //룸 활성화
     }
 }

@@ -39,11 +39,12 @@ public class Define
 
     public enum RoomType
     {
-        Monster,
-        Trap,
-        Heal,
-        Store,
-        Boss
+        Monster = 0,
+        Trap = 1,
+        Store = 2,
+        Boss = 3,
+        Heal = 4,
+        Start = 5
     }
     
 }
