@@ -14,9 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startRooms:
   - {fileID: 2120448120268649233, guid: 5ddc5b05f27369e4e90f7c6f2fee53d3, type: 3}
-  monsterRooms: []
+  monsterRooms:
+  - {fileID: 8413427508355323883, guid: 64c73b037d3caa14c9838806072cca10, type: 3}
   trapRooms:
   - {fileID: 2120448120268649233, guid: 5ddc5b05f27369e4e90f7c6f2fee53d3, type: 3}
-  healRooms: []
-  storeRoom: []
-  bossRoom: []
+  healRooms:
+  - {fileID: 2120448120268649233, guid: 5ddc5b05f27369e4e90f7c6f2fee53d3, type: 3}
+  storeRooms:
+  - {fileID: 3407282707321972906, guid: 4afe24e0b5bfa5a4898421567063cb86, type: 3}
+  bossRooms: []

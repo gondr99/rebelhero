@@ -6,19 +6,12 @@ public abstract class AIDecision : MonoBehaviour
     protected AIMovementData _aIMovementData;
     protected EnemyAIBrain _enemyBrain;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _enemyBrain = transform.GetComponentInParent<EnemyAIBrain>();
-        _aIActionData = _enemyBrain.transform.GetComponentInChildren<AIActionData>();
-        _aIMovementData = _enemyBrain.transform.GetComponentInChildren<AIMovementData>();
+        _aIActionData = _enemyBrain.transform.Find("AI").GetComponent<AIActionData>();
+        _aIMovementData = _enemyBrain.transform.Find("AI").GetComponent<AIMovementData>();
 
-
-        ChildAwake();
-    }
-
-    protected virtual void ChildAwake()
-    {
-        //자식 Awake에서 해줄게 있으면 여기서 구현
     }
 
     public abstract bool MakeADecision();

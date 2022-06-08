@@ -5,7 +5,7 @@ using UnityEngine;
 public class FeedbackStunAnimation : Feedback
 {
     [SerializeField]
-    private float _frameTime = 1f/30; //초당 30장씩
+    private float _framePerTime = 12; //초당 12장씩
     private SpriteRenderer _spriteRenderer;
     [SerializeField]
     private Sprite[] _sprites;
@@ -30,7 +30,7 @@ public class FeedbackStunAnimation : Feedback
 
     IEnumerator StunAnimationCoroutine()
     {
-        WaitForSeconds ws = new WaitForSeconds(_frameTime);
+        WaitForSeconds ws = new WaitForSeconds(1f / _framePerTime);
         int idx = 0;
         while(true)
         {

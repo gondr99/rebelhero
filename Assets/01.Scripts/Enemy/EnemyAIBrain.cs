@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class EnemyAIBrain : MonoBehaviour, IAgentInput
-{
+{ 
     public Transform target;
 
     [field: SerializeField] public UnityEvent<Vector2> OnMovementKeyPress { get; set; }
@@ -18,7 +18,7 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
 
     public Transform basePosition = null;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _aiActionData = transform.Find("AI").GetComponent<AIActionData>();
     }
@@ -27,12 +27,12 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
         _aiActionData.attack = state;
     }
 
-    private void Start()
+    protected void Start()
     {
-        target = GameManager.Instance.PlayerTrm;
+        target = GameManager.Instance.PlayerTrm; //플레이어를 타겟으로 잡아 넣고
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         //타겟이 없으면 적군은 정지
         if (target == null)
@@ -46,7 +46,7 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
 
     }
 
-    public void Attack()
+    public virtual void Attack()
     {
         OnFireButtonPress?.Invoke();
     }

@@ -16,6 +16,8 @@ public class TorchAnimation : MonoBehaviour
     private float _baseIntensity;
     private float _baseTime = 1f;
     private float _baseRadius;
+    
+    private Sequence seq = null;
 
     private Light2D _light;
 
@@ -24,6 +26,14 @@ public class TorchAnimation : MonoBehaviour
         _light = GetComponentInChildren<Light2D>();
         _baseIntensity = _light.intensity;
         _baseRadius = _light.pointLightOuterRadius;
+    }
+
+    private void OnDestroy()
+    {
+        if(seq != null)
+        {
+            seq.Kill();
+        }
     }
 
     private void OnEnable()
@@ -40,7 +50,7 @@ public class TorchAnimation : MonoBehaviour
         if (!gameObject.activeSelf)
             return;
 
-        Sequence seq = DOTween.Sequence();
+        seq = DOTween.Sequence();
         seq.Append(DOTween.To(
             () => _light.intensity,
             value => _light.intensity = value,
@@ -63,6 +73,5 @@ public class TorchAnimation : MonoBehaviour
         seq.AppendCallback(() => ShakeLight());
 
         //시퀀스의 마지막에는 (한번 흔들린 다음에는) 다시한번 ShakeLight
-
     }
 }

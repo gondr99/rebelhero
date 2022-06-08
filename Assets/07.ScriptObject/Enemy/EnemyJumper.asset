@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: EnemyJumper
   prefab: {fileID: 7153534447364181067, guid: d6b754b0b4bfa6b458d882818f66bcf6, type: 3}
-  poolPrefab: {fileID: 7153534447364181105, guid: d6b754b0b4bfa6b458d882818f66bcf6, type: 3}
+  poolPrefab: {fileID: 5719693262250594664, guid: d6b754b0b4bfa6b458d882818f66bcf6, type: 3}
   <maxHealth>k__BackingField: 200
   knockRegist: 10
   <damage>k__BackingField: 1

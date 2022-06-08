@@ -64,6 +64,9 @@ public class RoomManager
 
     private RoomType GetSpecialRoom()
     {
+        if (_roomCnt == _bossCnt - 1)
+            return RoomType.Store;
+
         float dice = Random.Range(0, 1f);
         //Æ®·¦ÀÌ³Ä ÈúÀÌ³Ä
 

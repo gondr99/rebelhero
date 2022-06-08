@@ -45,6 +45,12 @@ public class Trap : MonoBehaviour
         }
     }
 
+    public void DisableTrap()
+    {
+        StopAllCoroutines();
+        _animator.SetBool(_hashActive, false);
+    }
+
     private void OnDisable()
     {
         StopAllCoroutines();

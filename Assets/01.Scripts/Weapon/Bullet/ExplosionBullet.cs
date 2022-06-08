@@ -64,10 +64,8 @@ public class ExplosionBullet : RegularBullet
         IHittable hittable = collision.GetComponent<IHittable>();
 
         //피아가 같다면 충돌 무시하고 진행
-        if (hittable != null && hittable.IsEnemy == IsEnemy)
-        {
-            return;
-        }
+        if (hittable == null || hittable.IsEnemy == IsEnemy) return;
+
 
         //피아가 같지 않은 충돌에 도달했다면 일단 폭발 개시
 
