@@ -92,10 +92,12 @@ public class GameManager : MonoBehaviour
         {
             //생성된게 없으면 생성
             Room room = RoomManager.Instance.LoadStartRoom();
+            room.LoadRoomData();
             ChangeRoom(room);
         }else
         {
             //이미 생성되어 있는 룸이 있다면 셋팅
+            _currentRoom.LoadRoomData();
             PlayerTrm.position = _currentRoom.StartPosition;
             RoomManager.Instance.SetRoomDoorDestination(_currentRoom);
             _currentRoom.ActiveRoom();

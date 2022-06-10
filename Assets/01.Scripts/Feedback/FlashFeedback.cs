@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class FlashFeedback : Feedback
 {
+    [SerializeField]
     private SpriteRenderer _spriteRenderer = null;
     [SerializeField]
     private float _flashTime = 0.1f;
@@ -13,7 +14,8 @@ public class FlashFeedback : Feedback
 
     private void Awake()
     {
-        _spriteRenderer = transform.parent.Find("VisualSprite").GetComponent<SpriteRenderer>();
+        if(_spriteRenderer == null)
+            _spriteRenderer = transform.parent.Find("VisualSprite").GetComponent<SpriteRenderer>();
         _originalMaterialShader = _spriteRenderer.material.shader; //오리지날 셰이더 저장
     }
 

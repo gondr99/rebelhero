@@ -29,8 +29,17 @@ public class Room : MonoBehaviour
         _spawnerList.ForEach(x => x.ActivatePortalSensor()); //포탈센서 활성화
     }
 
+    private bool _loadComplete = false;
+
     protected void Awake()
     {
+        if (_loadComplete == false) LoadRoomData();
+    }
+
+    public void LoadRoomData()
+    {
+        if (_loadComplete == true) return;
+
         _spawnerList = new List<EnemySpawner>();
         transform.Find("Portals").GetComponentsInChildren<EnemySpawner>(_spawnerList);
         _closedPortalCount = 0;
@@ -47,7 +56,7 @@ public class Room : MonoBehaviour
         transform.Find("Enemies").GetComponentsInChildren<Enemy>(_enemyList);
         _deadEnemyCount = 0;
 
-        foreach(Enemy e in _enemyList)
+        foreach (Enemy e in _enemyList)
         {
             e.OnDie.AddListener(() =>
             {
@@ -64,6 +73,8 @@ public class Room : MonoBehaviour
         //모든 트랩 가져와서 저장
         _trapList = new List<Trap>();
         transform.Find("Traps").GetComponentsInChildren<Trap>(_trapList);
+
+        _loadComplete = true;
     }
 
     public void CheckClear()

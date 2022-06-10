@@ -7,11 +7,17 @@ public class DemonAttackAction : DemonBossAIAction
 {
     [SerializeField]
     private DemonBossAIBrain.AttackType _attackType;
-    public override void TakeAction()
+
+    private FieldInfo _fInfo = null;
+    protected override void Awake()
     {
-        //요기 고쳐야해.
-        FieldInfo fInfo = typeof(AIDemonBossPhaseData).GetField(_attackType.ToString(), BindingFlags.Public | BindingFlags.Instance);
-        bool check = (bool)fInfo.GetValue(_phaseData);
+        base.Awake();
+        _fInfo = typeof(AIDemonBossPhaseData).GetField(_attackType.ToString(), BindingFlags.Public | BindingFlags.Instance);
+    }
+
+    public override void TakeAction()
+    {        
+        bool check = (bool)_fInfo.GetValue(_phaseData);
         if(check == false && _phaseData.idleTime <= 0)
         {
             _demonBrain.Attack(_attackType);

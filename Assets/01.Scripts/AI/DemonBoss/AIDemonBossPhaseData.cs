@@ -17,7 +17,7 @@ public class AIDemonBossPhaseData : MonoBehaviour
 
     public bool isActive = false;
 
-    public bool RocketPunch;
+    public bool FlapperPunch;
     public bool ShockPunch;
     public bool SummonPortal;
     public bool Fireball;
@@ -32,5 +32,5 @@ public class AIDemonBossPhaseData : MonoBehaviour
 
     public float idleTime;
 
-    public bool CanAttack => RocketPunch == false && ShockPunch == false && SummonPortal == false && Fireball == false;
+    public bool CanAttack => FlapperPunch == false && ShockPunch == false && SummonPortal == false && Fireball == false;
 }

@@ -21,6 +21,7 @@ public class ImpactScript : PoolableMono
 
     public override void Reset()
     {
+        transform.localScale = Vector3.one;
         transform.localRotation = Quaternion.identity;
     }
 
@@ -32,5 +33,10 @@ public class ImpactScript : PoolableMono
         {
             _audioSource.Play();
         }
+    }
+
+    public virtual void SetLocalScale(Vector3 scale)
+    {
+        transform.localScale = scale;
     }
 }

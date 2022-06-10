@@ -3,7 +3,8 @@ using UnityEngine.Events;
 using DG.Tweening;
 
 public class DissolveFeedback : Feedback
-{     
+{   
+    [SerializeField]
     private SpriteRenderer _spriterRenderer = null;
     [SerializeField]
     private float _duration = 0.05f;
@@ -13,7 +14,8 @@ public class DissolveFeedback : Feedback
 
     private void Awake()
     {
-        _spriterRenderer = transform.parent.Find("VisualSprite").GetComponent<SpriteRenderer>();
+        if(_spriterRenderer == null)
+            _spriterRenderer = transform.parent.Find("VisualSprite").GetComponent<SpriteRenderer>();
     }
 
     public override void CompletePrevFeedback()
