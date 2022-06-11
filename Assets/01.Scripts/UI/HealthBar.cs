@@ -23,7 +23,10 @@ public class HealthBar : MonoBehaviour
     private Mesh _sepMesh;
     private MeshRenderer _sepMeshRenderer;
 
-    void Start()
+    [SerializeField]
+    private bool _disableSeparateBar;
+
+    void Awake()
     {
         _barTrm = transform.Find("Bar");
         _barTrm.localScale = new Vector3(0, 1f, 1);
@@ -45,7 +48,8 @@ public class HealthBar : MonoBehaviour
         if (_maxHealth < 0)
         {
             gameObject.SetActive(true);
-            CalculateSeparator(health);
+            if(_disableSeparateBar == false)
+                CalculateSeparator(health);
             _maxHealth = health;
         }
         _health = health;

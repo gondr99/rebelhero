@@ -25,6 +25,21 @@ public class PopupText : PoolableMono
             _textMesh.color = color;
         }
 
+        ShowingSequence();
+    }
+
+    public void Setup(string text, Vector3 pos, Color color, float fontSize = 10f)
+    {
+        transform.position = pos;
+        _textMesh.SetText(text);
+        _textMesh.color = color;
+        _textMesh.fontSize = fontSize;
+
+        ShowingSequence();
+    }
+
+    private void ShowingSequence()
+    {
         Sequence seq = DOTween.Sequence();
         seq.Append(transform.DOMoveY(transform.position.y + 0.5f, 1f));
         seq.Join(_textMesh.DOFade(0, 1f));
@@ -32,7 +47,6 @@ public class PopupText : PoolableMono
         {
             PoolManager.Instance.Push(this);
         });
-
     }
 
     public override void Reset()

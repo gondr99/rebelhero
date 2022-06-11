@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
-public class EnemySpawner : MonoBehaviour
+public class EnemySpawner : PoolableMono
 {
     [Header("적 생성")]
     [SerializeField]
@@ -48,6 +48,8 @@ public class EnemySpawner : MonoBehaviour
     private bool _passiveActive = false; //기본 액티브로 이 값이 활성화 되어 있다면 플레이어 유무와 상관없이 포탈이 활성화 된다.
     public UnityEvent OnClosePortal = null;
 
+    private List<Enemy> _spawnedEnemies = new List<Enemy>();
+    
     private void Awake()
     {
         _animator = transform.Find("VisualSprite").GetComponent<Animator>();
@@ -116,12 +118,28 @@ public class EnemySpawner : MonoBehaviour
         
         OnClosePortal?.Invoke();
 
-        Destroy(gameObject);
+        //풀링하는 포털의 경우는 이렇게
+        if (_passiveActive)
+        {
+            PoolManager.Instance.Push(this);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public void KillAllEnemyFromThisPortal()
+    {
+        _count = _spawnCount; //즉시 소환이 종료되도록 하고
+        _spawnedEnemies.ForEach(x => x.DeadProcess()); //모든 적 사망 처리
     }
 
     IEnumerator SpawnCoroutine()
     {
         yield return new WaitForSeconds(_portalOpenDelay);
+        _spawnedEnemies.Clear();
+
         while (_spawnCount < _count)
         {
             int randomIndex = Random.Range(0, _enemyList.Count); //어떤 적을 생성할지 결정
@@ -132,12 +150,11 @@ public class EnemySpawner : MonoBehaviour
             Vector3 posToSpawn = transform.position;// + (Vector3)randomOffset;
 
             Enemy spawnedEnemy = SpawnEnemy(posToSpawn, spawnEnemyData);
+            _spawnedEnemies.Add(spawnedEnemy);
 
             //등장 : 이 부분은 차후에 튀어 나오는 모션으로 변경 필요함
             spawnedEnemy.SpawnInPortal(transform.position + (Vector3)randomOffset * 1f, power:2f, time:0.8f);
 
-
-            //사망 처리 빼주는거 안했어.
             UnityAction deadAction = null;
             deadAction = () =>
             {
@@ -165,6 +182,20 @@ public class EnemySpawner : MonoBehaviour
         return enemy;
     }
 
+    public void SetPortalData(int cnt, bool passive)
+    {
+        this._count = cnt;
+        this._passiveActive = passive;  
+        ActivatePortalSensor();
+    }
+
+    public override void Reset()
+    {
+        _isOpen = false;
+        _deadCount = 0;
+        _spawnCount = 0;
+    }
+
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
@@ -176,4 +207,6 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 #endif
+
+
 }

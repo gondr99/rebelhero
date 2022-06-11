@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyName: EnemyGrowler
   prefab: {fileID: 3999661978772881740, guid: 4ff01acaa092ff148bc0a34e2b121320, type: 3}
   poolPrefab: {fileID: 3999661978772881782, guid: 4ff01acaa092ff148bc0a34e2b121320, type: 3}
-  <maxHealth>k__BackingField: 10
+  <maxHealth>k__BackingField: 4
   knockRegist: 0
   <damage>k__BackingField: 1
   attackDelay: 1

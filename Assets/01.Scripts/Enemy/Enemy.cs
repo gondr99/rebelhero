@@ -62,13 +62,11 @@ public class Enemy : PoolableMono, IHittable, IAgent, IKnockBack
         if (_isDead) return;
 
         //치명타율에 따른 데미지 계산
-        float critical = Random.value;
-        bool isCritical = false;
-        if(critical <= GameManager.Instance.CriticalChance)
+        
+        bool isCritical = GameManager.Instance.IsCritical;
+        if(isCritical)
         {
-            float ratio = Random.Range(GameManager.Instance.CriticalMinDamage, GameManager.Instance.CriticalMinDamage);
-            damage = Mathf.CeilToInt((float)damage * ratio);
-            isCritical = true;
+            damage = GameManager.Instance.GetCriticalDamage(damage);
         }
 
         Health -= damage;
@@ -83,11 +81,17 @@ public class Enemy : PoolableMono, IHittable, IAgent, IKnockBack
         //사망 처리
         if(Health <= 0)
         {
-            _isDead = true;
-            _agentMovement.StopImmediatelly();
-            _agentMovement.enabled = false;
-            OnDie?.Invoke();//죽었을 때 피드백을 실행한다.
+            DeadProcess();
         }
+    }
+
+    public void DeadProcess()
+    {
+        Health = 0;
+        _isDead = true;
+        _agentMovement.StopImmediatelly();
+        _agentMovement.enabled = false;
+        OnDie?.Invoke();//죽었을 때 피드백을 실행한다.
     }
 
     public override void Reset()

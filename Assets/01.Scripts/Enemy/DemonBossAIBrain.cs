@@ -31,12 +31,23 @@ public class DemonBossAIBrain : EnemyAIBrain
 
     public UnityEvent OnFireBallCast = null;  //파이어볼 캐스팅 이벤트
     public UnityEvent OnHandAttackCast = null; //주먹관련 공격하기전 이벤트
+    public UnityEvent OnKillAllEnemies = null;
 
 
     private Hand _leftHand;
     public Hand LeftHand => _leftHand;
     private Hand _rightHand;
     public Hand RightHand => _rightHand;
+    private Boss _boss;
+
+    //이쪽 파트는 나중에 SO로
+    [SerializeField]
+    private float _timer = 10f; //피격상태가 지속되는 시간
+    private float _generateTimer = 0f;
+    private bool _isNeutral = false;
+    private int _handHP = 50;
+    private int _bossHP = 500;
+    private int _neutralCnt = 100; //100만큼의 무력 수치
 
     protected override void Awake()
     {
@@ -46,8 +57,12 @@ public class DemonBossAIBrain : EnemyAIBrain
         _leftHand = transform.Find("LeftHand").GetComponent<Hand>();
         _rightHand = transform.Find("RightHand").GetComponent<Hand>();
 
-        _leftHand.InitHand(200);
-        _rightHand.InitHand(200);
+        //이부분은 전부 SO로 처리해야 해.
+        _leftHand.InitHand(_handHP);
+        _rightHand.InitHand(_handHP);
+
+        _boss = GetComponent<Boss>();
+        _boss.HP = _bossHP; //보스 체력 200으로 설정 .
 
         SetDictionary();//공격관련 Dictionary 설정
         
@@ -86,14 +101,58 @@ public class DemonBossAIBrain : EnemyAIBrain
         {
             atk = attackTrm.GetComponent<SummonPortalAttack>(),
             animAction = OnFireBallCast,
-            //time = 
+            time = 10f
         };
+        _attackDic.Add(AttackType.SummonPortal, summonPortalData);
     }
     #endregion
 
     protected override void Update()
     {
         currentState.UpdateState();
+
+        if (_boss.State == Boss.BossState.Generate)
+        {
+            _generateTimer -= Time.deltaTime;
+            if (_generateTimer <= 0)
+            {
+                _generateTimer = 0;
+                SetInvincible(); //무적상태로 전환
+            }
+        }
+
+        //무력화 들어갔다면 무력화 시간 감소후 다시 무적상태로 전환
+        if(_boss.State == Boss.BossState.Neutral && _isNeutral == false)
+        {
+            _isNeutral = true;
+            OnKillAllEnemies?.Invoke();
+            StartCoroutine(DelayForNeutral());
+        }
+
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            //모든 적 사망처리 치트키
+            OnKillAllEnemies?.Invoke();
+        }
+        
+    }
+
+    IEnumerator DelayForNeutral()
+    {
+        yield return new WaitForSeconds(5f);
+        SetInvincible();
+        _isNeutral = false;
+    }
+
+    private void SetInvincible()
+    {
+        _boss.State = Boss.BossState.Invincible; //무적상태로 전환
+        _leftHand.Regenerate(_handHP);
+        _rightHand.Regenerate(_handHP);
+        _phaseData.hasLeftArm = true;
+        _phaseData.hasRightArm = true;
+        _phaseData.nextAttackType = AttackType.SummonPortal;
+        _phaseData.idleTime = 1f; //1초후 소환
     }
 
     public void Attack(AttackType type)
@@ -130,5 +189,34 @@ public class DemonBossAIBrain : EnemyAIBrain
         _phaseData.nextAttackType = (AttackType)randIdx;
         
     }
-    
+
+    public void LostArm(bool isLeft)
+    {
+        if(isLeft)
+        {
+            _phaseData.hasLeftArm = false;
+        }
+        else
+        {
+            _phaseData.hasRightArm = false;
+        }
+
+        //모든 팔을 잃었다면 다운상태가 되면서 피격가능해짐.
+        if(_phaseData.HasArms == false)
+        {
+            _boss.State = Boss.BossState.Damageable;
+            StartCoroutine(DelayToGenerateArm());
+        }
+    }
+
+    IEnumerator DelayToGenerateArm()
+    {
+        yield return new WaitForSeconds(_timer);
+        _generateTimer = 10f; //4초 안에 무력화 못시키면 팔 재생
+        //바로 포탈 소환
+        _phaseData.nextAttackType = AttackType.SummonPortal;
+        _phaseData.idleTime = 0f;
+        _boss.NeutralCnt = _neutralCnt;
+        _boss.State = Boss.BossState.Generate;
+    }
 }

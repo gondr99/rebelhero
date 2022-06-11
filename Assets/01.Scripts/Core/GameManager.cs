@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            if(_player == null)
+            if (_player == null)
             {
                 _player = PlayerTrm.GetComponent<Player>();
             }
@@ -37,9 +37,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public float CriticalChance { get => PlayerStatus.critical; } 
-    public float CriticalMinDamage { get => PlayerStatus.criticalMinDamage; }
-    public float CriticalMaxDamage { get => PlayerStatus.criticalMaxDamage; }
+    public bool IsCritical => Random.value < PlayerStatus.critical;
+    public int GetCriticalDamage (int damage)
+    {
+        float ratio = Random.Range(PlayerStatus.criticalMinDamage, PlayerStatus.criticalMaxDamage);
+        damage = Mathf.CeilToInt((float)damage * ratio);
+        return damage;
+    }
+
+    //public float CriticalChance { get => PlayerStatus.critical; } 
+    //public float CriticalMinDamage { get => PlayerStatus.criticalMinDamage; }
+    //public float CriticalMaxDamage { get => PlayerStatus.criticalMaxDamage; }
     private void GetPlayerFromHeirachy()
     {
         //이부분은 향후 변경예정
@@ -102,6 +110,10 @@ public class GameManager : MonoBehaviour
             RoomManager.Instance.SetRoomDoorDestination(_currentRoom);
             _currentRoom.ActiveRoom();
         }
+
+        //번역을 위한 로케일 설정
+        TextManager.Instance = new TextManager();
+        TextManager.Instance.Init();
 
         SetCursorIcon();
         CreatePool();

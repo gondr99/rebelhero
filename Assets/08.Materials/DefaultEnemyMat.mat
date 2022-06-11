@@ -43,6 +43,6 @@ Material:
     - _MakeSolidColor: 0
     m_Colors:
     - Color_53999ee7083c494e8be387c4536997b3: {r: 3.921569, g: 0, b: 0, a: 1}
-    - _NeutralColor: {r: 1, g: 0.8862746, b: 0, a: 1}
+    - _NeutralColor: {r: 2.1185474, g: 1.8190669, b: 0, a: 1}
     - _SolidColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

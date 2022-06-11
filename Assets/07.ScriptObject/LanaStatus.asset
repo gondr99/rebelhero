@@ -16,4 +16,5 @@ MonoBehaviour:
   criticalMinDamage: 1.5
   criticalMaxDamage: 2.5
   dodge: 0.1
-  maxHP: 5
+  maxHP: 8
+  maxWeapon: 3

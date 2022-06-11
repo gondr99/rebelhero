@@ -19,6 +19,9 @@ public class Hand : MonoBehaviour, IHittable
 
     public Vector3 _hitPoint { get; set; }
 
+    private SpriteRenderer _spriteRenderer;
+    private BoxCollider2D _boxCol;
+
     #region 피격처리 관련
     private int _hp;
     public int HP => _hp;
@@ -49,6 +52,8 @@ public class Hand : MonoBehaviour, IHittable
         _attackPosTrm = transform.Find("AttackPoint");
         _initPosition = transform.position; //초기 포지션 저장해두고
         _whatIsEnemy = 1 << LayerMask.NameToLayer("Player");
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _boxCol = GetComponent<BoxCollider2D>();
     }
 
     private void OnDisable()
@@ -167,18 +172,23 @@ public class Hand : MonoBehaviour, IHittable
 
     #endregion
 
-    //private void Update()
-    //{
-    //    if(Input.GetKeyDown(KeyCode.P))
-    //    {
-    //        AttackShockSequence(Vector3.zero);
-    //    }
-    //    if (Input.GetKeyDown(KeyCode.O))
-    //    {
-    //        AttackFlapperSequence(Vector3.zero);
-    //    }
-    //}
+    
+    public void Regenerate(int maxHp)
+    {
+        
+        _spriteRenderer.material.SetFloat("_Dissolve", 1);
+        gameObject.SetActive(true);
+        _hp = maxHp;
+        _animator.SetTrigger(_hashFadeIn);
+        StartCoroutine(ResetDeadParam());
+    }
 
+    IEnumerator ResetDeadParam()
+    {
+        yield return new WaitForSeconds(1f);
+        _boxCol.enabled = true;
+        _isDead = false;
+    }
 
     public void GetHit(int damage, GameObject damageDealer)
     {
@@ -188,6 +198,16 @@ public class Hand : MonoBehaviour, IHittable
         _hp -= damage;
 
         _hitPoint = transform.position + (Vector3)Random.insideUnitCircle; //피격지점 저장
+
+        bool isCritical = GameManager.Instance.IsCritical;
+        if (isCritical)
+        {
+            damage = GameManager.Instance.GetCriticalDamage(damage);
+        }
+
+        PopupText damagePopup = PoolManager.Instance.Pop("PopupText") as PopupText;
+
+        damagePopup?.Setup(damage, transform.position + new Vector3(0, 0.5f, 0), isCritical, Color.white);
 
         if (_hp <= 0)
         {
