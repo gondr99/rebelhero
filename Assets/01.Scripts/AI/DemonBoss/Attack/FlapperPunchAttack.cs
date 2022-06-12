@@ -13,40 +13,43 @@ public class FlapperPunchAttack : DemonBossAttack
         _brain = transform.parent.GetComponent<DemonBossAIBrain>();
     }
 
-    public override void Attack(Action Callback)
+    public override void Attack(Action<bool> Callback)
     {
         StartCoroutine(FlapperSequence(Callback));
     }
 
-    IEnumerator FlapperSequence(Action Callback)
+    IEnumerator FlapperSequence(Action<bool> Callback)
     {
 
         if (_brain.LeftHand.gameObject.activeSelf == false && _brain.RightHand.gameObject.activeSelf == false)
         {
-            Callback?.Invoke();
+            Callback?.Invoke(false);
             yield break;
         }
 
-        Hand first = _brain.LeftHand;
-        Hand second = null;
-        if (first.gameObject.activeSelf == false)
+        if (_brain.LeftHand.gameObject.activeSelf == false && _brain.RightHand.gameObject.activeSelf == false)
         {
-            first = _brain.RightHand;
-        }
-        else if (_brain.RightHand.gameObject.activeSelf == true)
-        {
-            second = _brain.RightHand;
+            Callback?.Invoke(false);
+            yield break;
         }
 
-        first.AttackFlapperSequence(_brain.target.position, null);
-        yield return new WaitForSeconds(1f);
-        if (second != null)
+        if (_brain.LeftHand.gameObject.activeSelf == false)
         {
-            second.AttackFlapperSequence(_brain.target.position, () => Callback?.Invoke());
+            _brain.RightHand.AttackFlapperSequence(_brain.target.position, () => Callback?.Invoke(true));
         }
         else
         {
-            Callback?.Invoke();
+            _brain.LeftHand.AttackFlapperSequence(_brain.target.position, null);
+            yield return new WaitForSeconds(1f);
+            if (_brain.RightHand.gameObject.activeSelf == false)
+            {
+                Callback?.Invoke(false);
+            }
+            else
+            {
+                _brain.RightHand.AttackFlapperSequence(_brain.target.position, () => Callback?.Invoke(true));
+            }
         }
+
     }
 }

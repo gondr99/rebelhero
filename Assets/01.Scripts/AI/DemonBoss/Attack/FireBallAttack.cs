@@ -19,12 +19,12 @@ public class FireBallAttack : DemonBossAttack
         _firePos = transform.parent.Find("FireballPosition");
     }
 
-    public override void Attack(Action Callback)
+    public override void Attack(Action<bool> Callback)
     {
         StartCoroutine(FireSequence(Callback));
     }
 
-    IEnumerator FireSequence(Action Callback)
+    IEnumerator FireSequence(Action<bool> Callback)
     {
         WaitForSeconds ws = new WaitForSeconds(_fireTerm);
         Vector3 offsetPosition = new Vector3( - _fireBallCount / 2f * _distance, 0);
@@ -45,6 +45,6 @@ public class FireBallAttack : DemonBossAttack
             bullet.damageFactor = 1;
         }
 
-        Callback?.Invoke();
+        Callback?.Invoke(true);
     }
 }

@@ -45,6 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dropTable: {fileID: 11400000, guid: 8a0c60691e7c9544b97d46e43a1f100e, type: 2}
   _dropEffect: 0
+  _dropPower: 2
   _dropChance: 1
 --- !u!1 &3999661977021113713
 GameObject:
@@ -340,6 +341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ca56f6ce3840854cb65220eac709fee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 0}
   _duration: 0.7
   <DeathCallback>k__BackingField:
     m_PersistentCalls:
@@ -989,7 +991,7 @@ MonoBehaviour:
   - {x: -0.12511826, y: 0.04861164, z: 0}
   m_ShapePathHash: 1377685725
   m_Mesh: {fileID: 0}
-  m_InstanceId: 84698
+  m_InstanceId: 40364
 --- !u!114 &3999661978499473838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1062,6 +1064,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4797ffe6bdff2b447930890efc0383a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 0}
   _flashTime: 0.1
   _flashMat: {fileID: 2100000, guid: b9c5060b18e0f8348910af64caf3a6af, type: 2}
 --- !u!114 &3999661978639567882
@@ -1427,6 +1430,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 3999661977694025609}
+        m_TargetAssemblyTypeName: FeedbackPlayer, Assembly-CSharp
+        m_MethodName: FinishFeedback
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

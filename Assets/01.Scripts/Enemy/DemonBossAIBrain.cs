@@ -40,9 +40,13 @@ public class DemonBossAIBrain : EnemyAIBrain
     public Hand RightHand => _rightHand;
     private Boss _boss;
 
+    private SummonPortalAttack _summonPortalAttack; //포탈 공격은 패턴을 정할 때 필요하니 가져와둔다
+    private float _portalCoolTime = 10f;
+    private float _currentPortalCoolTime = 0;
     //이쪽 파트는 나중에 SO로
     [SerializeField]
-    private float _timer = 10f; //피격상태가 지속되는 시간
+    private float _dealTimer = 10f; //피격상태가 지속되는 시간
+    private float _generateTimerMax = 8f; //8초안에 무력화 
     private float _generateTimer = 0f;
     private bool _isNeutral = false;
     private int _handHP = 50;
@@ -64,6 +68,7 @@ public class DemonBossAIBrain : EnemyAIBrain
         _boss = GetComponent<Boss>();
         _boss.HP = _bossHP; //보스 체력 200으로 설정 .
 
+        _summonPortalAttack = transform.Find("AttackType").GetComponent<SummonPortalAttack>();
         SetDictionary();//공격관련 Dictionary 설정
         
     }
@@ -77,7 +82,7 @@ public class DemonBossAIBrain : EnemyAIBrain
         {
             atk = attackTrm.GetComponent<FireBallAttack>(),
             animAction = OnFireBallCast,
-            time = 5f
+            time = 1f
         };
         _attackDic.Add(AttackType.Fireball, fireballData);
 
@@ -85,7 +90,7 @@ public class DemonBossAIBrain : EnemyAIBrain
         {
             atk = attackTrm.GetComponent<ShockPunchAttack>(),
             animAction = OnHandAttackCast,
-            time = 4f
+            time = 2f
         };
         _attackDic.Add(AttackType.ShockPunch, shockPunchData);
 
@@ -93,7 +98,7 @@ public class DemonBossAIBrain : EnemyAIBrain
         {
             atk = attackTrm.GetComponent<FlapperPunchAttack>(),
             animAction = OnHandAttackCast,
-            time = 4f
+            time = 2f
         };
         _attackDic.Add(AttackType.FlapperPunch, flapperPunchData);
 
@@ -101,7 +106,7 @@ public class DemonBossAIBrain : EnemyAIBrain
         {
             atk = attackTrm.GetComponent<SummonPortalAttack>(),
             animAction = OnFireBallCast,
-            time = 10f
+            time = 5f
         };
         _attackDic.Add(AttackType.SummonPortal, summonPortalData);
     }
@@ -127,6 +132,12 @@ public class DemonBossAIBrain : EnemyAIBrain
             _isNeutral = true;
             OnKillAllEnemies?.Invoke();
             StartCoroutine(DelayForNeutral());
+        }
+
+        //포탈 쿨타임이 돌고 있다면 포탈 쿨
+        if(_currentPortalCoolTime > 0 )
+        {
+            _currentPortalCoolTime -= Time.deltaTime;
         }
 
         if(Input.GetKeyDown(KeyCode.P))
@@ -167,8 +178,8 @@ public class DemonBossAIBrain : EnemyAIBrain
 
         if(atkData != null)
         {
-            atkData.atk.Attack(() => {
-                _phaseData.idleTime = atkData.time; //이시간만큼 대기후 다시 파이어볼 발사
+            atkData.atk.Attack((result) => {
+                _phaseData.idleTime = result == true ? atkData.time : 0.2f; //공격 실패시 0.2초 이내로 다음공격 수행                
                 SetNextAttackPattern();
                 fInfo.SetValue(_phaseData, false);
             });
@@ -180,6 +191,13 @@ public class DemonBossAIBrain : EnemyAIBrain
     private void SetNextAttackPattern()
     {
         //공격종류 설정
+        if(_summonPortalAttack.summonedPortalCnt <= 0 && _currentPortalCoolTime <= 0) //현재 생성된 포탈이 없다면 바로 포탈 생성
+        {
+            _phaseData.nextAttackType = AttackType.SummonPortal;
+            _currentPortalCoolTime = _portalCoolTime;
+            return;
+        }
+
         int cnt = Enum.GetValues(typeof(AttackType)).Length;
         int startNum = 0;
         if (_phaseData.HasArms == false)
@@ -211,8 +229,8 @@ public class DemonBossAIBrain : EnemyAIBrain
 
     IEnumerator DelayToGenerateArm()
     {
-        yield return new WaitForSeconds(_timer);
-        _generateTimer = 10f; //4초 안에 무력화 못시키면 팔 재생
+        yield return new WaitForSeconds(_dealTimer);
+        _generateTimer = _generateTimerMax; //8초 안에 무력화 못시키면 팔 재생
         //바로 포탈 소환
         _phaseData.nextAttackType = AttackType.SummonPortal;
         _phaseData.idleTime = 0f;

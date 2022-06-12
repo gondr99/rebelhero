@@ -132,7 +132,14 @@ public class EnemySpawner : PoolableMono
     public void KillAllEnemyFromThisPortal()
     {
         _count = _spawnCount; //즉시 소환이 종료되도록 하고
-        _spawnedEnemies.ForEach(x => x.DeadProcess()); //모든 적 사망 처리
+        if(_spawnedEnemies.Count == 0)
+        {
+            ClosePortal();
+        }
+        else
+        {
+            _spawnedEnemies.ForEach(x => x.DeadProcess()); //모든 적 사망 처리
+        }
     }
 
     IEnumerator SpawnCoroutine()

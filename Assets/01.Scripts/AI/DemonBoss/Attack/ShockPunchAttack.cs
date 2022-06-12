@@ -12,39 +12,37 @@ public class ShockPunchAttack : DemonBossAttack
         _brain = transform.parent.GetComponent<DemonBossAIBrain>();
     }
 
-    public override void Attack(Action Callback)
+    public override void Attack(Action<bool> Callback)
     {
         StartCoroutine(PunchSequence(Callback));
     }
 
-    IEnumerator PunchSequence(Action Callback)
+    IEnumerator PunchSequence(Action<bool> Callback)
     {
 
         if(_brain.LeftHand.gameObject.activeSelf == false && _brain.RightHand.gameObject.activeSelf == false)
         {
-            Callback?.Invoke();
+            Callback?.Invoke(false);
             yield break;
         }    
 
-        Hand first = _brain.LeftHand;
-        Hand second = null;
-        if (first.gameObject.activeSelf == false)
+        if (_brain.LeftHand.gameObject.activeSelf == false)
         {
-            first = _brain.RightHand;
+            _brain.RightHand.AttackShockSequence(_brain.target.position, () => Callback?.Invoke(true));
         }
-        else if(_brain.RightHand.gameObject.activeSelf == true)
+        else 
         {
-            second = _brain.RightHand;
+            _brain.LeftHand.AttackShockSequence(_brain.target.position, null);
+            yield return new WaitForSeconds(1f);
+            if(_brain.RightHand.gameObject.activeSelf == false)
+            {
+                Callback?.Invoke(false);
+            }
+            else
+            {
+                _brain.RightHand.AttackShockSequence(_brain.target.position, () => Callback?.Invoke(true));
+            }
         }
 
-        first.AttackShockSequence(_brain.target.position, null);
-        yield return new WaitForSeconds(1f);
-        if (second != null)
-        {
-            second.AttackShockSequence(_brain.target.position, () => Callback?.Invoke());
-        }else
-        {
-            Callback?.Invoke();
-        }
     }
 }
