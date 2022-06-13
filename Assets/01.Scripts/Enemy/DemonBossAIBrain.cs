@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
@@ -53,7 +54,8 @@ public class DemonBossAIBrain : EnemyAIBrain
     private int _handHP = 50;
     private int _bossHP = 500;
     private int _neutralCnt = 100; //100만큼의 무력 수치
-    
+
+    private Queue<AttackType> _atkQueue;
 
     protected override void Awake()
     {
@@ -69,6 +71,8 @@ public class DemonBossAIBrain : EnemyAIBrain
 
         _boss = GetComponent<Boss>();
         _boss.HP = _bossHP; //보스 체력 200으로 설정 .
+
+        _atkQueue = new Queue<AttackType>(); //공격타입 설정 큐
 
         _summonPortalAttack = transform.Find("AttackType").GetComponent<SummonPortalAttack>();
         SetDictionary();//공격관련 Dictionary 설정
@@ -137,16 +141,18 @@ public class DemonBossAIBrain : EnemyAIBrain
             StartCoroutine(DelayForNeutral());
         }
 
-        //포탈 쿨타임이 돌고 있다면 포탈 쿨
-        if(_currentPortalCoolTime > 0 )
-        {
-            _currentPortalCoolTime -= Time.deltaTime;
-        }
-
-        if(Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P))
         {
             //모든 적 사망처리 치트키
             OnKillAllEnemies?.Invoke();
+        }
+
+        if (_isNeutral) return;
+
+        //포탈 쿨타임이 돌고 있다면 포탈 쿨
+        if (_currentPortalCoolTime > 0 )
+        {
+            _currentPortalCoolTime -= Time.deltaTime;
         }
 
         currentState.UpdateState();
@@ -204,14 +210,31 @@ public class DemonBossAIBrain : EnemyAIBrain
             return;
         }
 
-        int cnt = Enum.GetValues(typeof(AttackType)).Length;
-        int startNum = 0;
-        if (_phaseData.HasArms == false)
-            startNum = 2; //1,2번 공격은 팔이 없으면 못한다.
-        int randIdx = Random.Range(startNum, cnt);
-
-        _phaseData.nextAttackType = (AttackType)randIdx;
+        if(_atkQueue.Count == 0)
+        {
+            ShuffleAttackType();
+        }
         
+        _phaseData.nextAttackType = _atkQueue.Dequeue();        
+    }
+
+    private void ShuffleAttackType()
+    {
+        //여기를 바꾸면 단순 랜덤이 아닌 패턴화된 공격을 할 수도 있다.
+        Array types = Enum.GetValues(typeof(AttackType));
+
+        List<AttackType> list = new List<AttackType>();
+        foreach(AttackType t in types)
+        {
+            list.Add(t);
+        }
+        
+        for(int i = 0; i < list.Count; i++)
+        {
+            int idx = Random.Range(0, list.Count - i);
+            _atkQueue.Enqueue(list[idx]);
+            list[idx] = list[list.Count - i - 1];            
+        }
     }
 
     public void LostArm(bool isLeft)
@@ -242,5 +265,10 @@ public class DemonBossAIBrain : EnemyAIBrain
         _phaseData.idleTime = 0f;
         _boss.NeutralCnt = _neutralCnt;
         _boss.State = Boss.BossState.Generate;
+    }
+
+    public void BossDead()
+    {
+        OnKillAllEnemies?.Invoke();
     }
 }

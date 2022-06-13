@@ -17,6 +17,8 @@ public class Boss : MonoBehaviour, IHittable
     public UnityEvent OnShock = null; //화면흔들림과 이펙트
     public UnityEvent OnDead = null;
 
+    public UnityEvent<float> OnDamaged = null;
+
     public enum BossState
     {
         Invincible,
@@ -62,7 +64,9 @@ public class Boss : MonoBehaviour, IHittable
 
     [SerializeField] //나중에 SO를 통해서 값을 넣어야 한다.
     private int _hp;
-    public int HP { get=> _hp; set=> _hp = value; }
+    public int HP { get=> _hp; set  { _hp = value; _maxHP = value; } }
+    private int _maxHP;
+
     private bool _isDead = false;
     public bool IsDead => _isDead;
 
@@ -118,6 +122,8 @@ public class Boss : MonoBehaviour, IHittable
         {
             dPopup?.Setup(damage, transform.position + new Vector3(0, 0.5f, 0), critical, Color.white);
             _hp -= damage;
+
+            OnDamaged?.Invoke(_hp / (float)_maxHP);
 
             if (_hp <= 0)
             {

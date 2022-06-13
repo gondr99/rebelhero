@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class UIManager
 {
@@ -12,12 +13,24 @@ public class UIManager
     private int _weaponTooltipCnt = 0;
     private int _toolTipSortingOrder = 0;
 
+    private RectTransform _uiCanvasTrm = null;
+    private RectTransform _bossHealthBarTrm = null;
+    private BossHealthBar _bossHealthBar = null;
+    private float _bossHealthAnchorY = -150f;
+
     public UIManager()
     {
         _tooltipCanvasTrm = GameObject.Find("ToopTipCanvas").GetComponent<RectTransform>();
         _messageTooltip = _tooltipCanvasTrm.Find("MessageTooltip").GetComponent<MessageTooltip>();
 
         _messageTooltip.CloseImmediatly();
+
+        _uiCanvasTrm = GameObject.Find("UICanvas").GetComponent<RectTransform>();
+
+        _bossHealthBarTrm = _uiCanvasTrm.Find("bottomPanel/BossHPBar").GetComponent<RectTransform>();
+        _bossHealthBar = _bossHealthBarTrm.GetComponent<BossHealthBar>();
+
+        _bossHealthBarTrm.anchoredPosition = new Vector2(0, _bossHealthAnchorY);
     }
 
     public void OpenMessageTooltip(string msg, float time = 0)
@@ -49,5 +62,23 @@ public class UIManager
         _weaponTooltipCnt--;
         if (_weaponTooltipCnt == 0)
             _toolTipSortingOrder = 0;
+    }
+
+    public void EnteringBossRoom(Boss boss)
+    {
+        //카메라 위치 조절
+        //보스 체력바 등장
+        Sequence seq = DOTween.Sequence();
+        _bossHealthBar.SetHealthBar(0);
+        seq.Append(_bossHealthBarTrm.DOAnchorPos(Vector2.zero, 0.5f));
+        seq.AppendCallback(() =>
+        {
+            _bossHealthBar.InitHealthBar(boss.OnDamaged);
+        });
+        
+    }
+    public void ExitBossRoom()
+    {
+
     }
 }

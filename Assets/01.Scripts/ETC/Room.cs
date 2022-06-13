@@ -11,7 +11,10 @@ public class Room : MonoBehaviour
     public List<Door> DoorList { get => _doorList; }
 
     [SerializeField]
-    protected bool _roomCleared = false;
+    protected bool _roomCleared = false, _isBossRoom;
+    public bool IsBossRoom => _isBossRoom;
+    private Boss _roomBoss;
+    public Boss RoomBoss => _roomBoss;
 
     private Transform _startPosTrm;
     public Vector3 StartPosition
@@ -27,6 +30,11 @@ public class Room : MonoBehaviour
     public void ActiveRoom()
     {
         _spawnerList.ForEach(x => x.ActivatePortalSensor()); //포탈센서 활성화
+
+        if(_isBossRoom)
+        {
+            UIManager.Instance.EnteringBossRoom(_roomBoss);
+        }
     }
 
     private bool _loadComplete = false;
@@ -75,6 +83,11 @@ public class Room : MonoBehaviour
         transform.Find("Traps").GetComponentsInChildren<Trap>(_trapList);
 
         _loadComplete = true;
+
+        if(_isBossRoom)
+        {
+            _roomBoss = transform.Find("Enemies").GetComponentInChildren<Boss>();
+        }
     }
 
     public void CheckClear()
