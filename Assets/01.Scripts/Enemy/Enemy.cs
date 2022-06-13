@@ -87,6 +87,7 @@ public class Enemy : PoolableMono, IHittable, IAgent, IKnockBack
 
     public void DeadProcess()
     {
+        if (_isDead) return; //이미 죽음처리가 되고 있는 애들은 안받도록
         Health = 0;
         _isDead = true;
         _agentMovement.StopImmediatelly();

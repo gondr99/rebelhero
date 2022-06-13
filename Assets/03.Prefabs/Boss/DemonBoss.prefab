@@ -68,6 +68,7 @@ GameObject:
   - component: {fileID: 587299348}
   - component: {fileID: 587299346}
   - component: {fileID: 587299347}
+  - component: {fileID: 198597301}
   m_Layer: 7
   m_Name: FeedbackShock
   m_TagString: Untagged
@@ -117,8 +118,84 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cmVCam: {fileID: 0}
   _amplitude: 5
-  _intensity: 1
-  _duration: 0.9
+  _intensity: 3.8
+  _duration: 0.7
+--- !u!114 &198597301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 587299345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7390b0827a0a86b45a75d958ad8df151, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _freezeTimeDelay: 0.05
+  _unFreezeTimeDelay: 0.04
+  _timeFreezeValue: 0.2
+--- !u!1 &1026827287
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1026827290}
+  - component: {fileID: 1026827288}
+  - component: {fileID: 1026827289}
+  m_Layer: 7
+  m_Name: FeedbackDead
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1026827290
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1026827287}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4221466677624818873}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1026827288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1026827287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e83f4a07a08b2904f948788b1d740111, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _feedbackToPlay:
+  - {fileID: 1026827289}
+--- !u!114 &1026827289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1026827287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7390b0827a0a86b45a75d958ad8df151, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _freezeTimeDelay: 0.05
+  _unFreezeTimeDelay: 0.5
+  _timeFreezeValue: 0.2
 --- !u!1 &4221466676748768587
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,7 +523,7 @@ MonoBehaviour:
   Fireball: 0
   hasLeftArm: 1
   hasRightArm: 1
-  nextAttackType: 0
+  nextAttackType: 3
   idleTime: 5
 --- !u!1 &4221466677020463532
 GameObject:
@@ -836,6 +913,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _summonCnt: 2
+  summonedPortalCnt: 0
 --- !u!1 &4221466677186415690
 GameObject:
   m_ObjectHideFlags: 0
@@ -926,7 +1004,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ca56f6ce3840854cb65220eac709fee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spriterRenderer: {fileID: 4221466678675402710}
+  _spriteRenderer: {fileID: 4221466678675402710}
   _duration: 1
   <DeathCallback>k__BackingField:
     m_PersistentCalls:
@@ -1209,6 +1287,7 @@ Transform:
   - {fileID: 458398774}
   - {fileID: 587299348}
   - {fileID: 4288387243712612126}
+  - {fileID: 1026827290}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1256,8 +1335,26 @@ MonoBehaviour:
         m_CallState: 2
   OnHandAttackCast:
     m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4221466677947671932}
+        m_TargetAssemblyTypeName: DemonBossBodyAnimation, Assembly-CSharp
+        m_MethodName: PlaySummonPortalAnimation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnKillAllEnemies:
+    m_PersistentCalls:
       m_Calls: []
-  _timer: 10
+  _dealTimer: 8
+  _generateTimerMax: 8
+  _neutralTime: 10
+  _portalCoolTime: 10
 --- !u!61 &292130021
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1298,10 +1395,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnChangeNeutral:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4221466677947671932}
+        m_TargetAssemblyTypeName: DemonBossBodyAnimation, Assembly-CSharp
+        m_MethodName: EnterNeutral
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnChangeGenerateState:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4221466677947671932}
+        m_TargetAssemblyTypeName: DemonBossBodyAnimation, Assembly-CSharp
+        m_MethodName: EnterGenerateArm
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnChangeInvincible:
     m_PersistentCalls:
       m_Calls:
@@ -1334,7 +1455,55 @@ MonoBehaviour:
         m_CallState: 2
   OnDead:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4221466677947671932}
+        m_TargetAssemblyTypeName: DemonBossBodyAnimation, Assembly-CSharp
+        m_MethodName: PlayDeadAnimation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4221466678675402711}
+        m_TargetAssemblyTypeName: Hand, Assembly-CSharp
+        m_MethodName: KillThisHand
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4221466678550455287}
+        m_TargetAssemblyTypeName: Hand, Assembly-CSharp
+        m_MethodName: KillThisHand
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1026827288}
+        m_TargetAssemblyTypeName: FeedbackPlayer, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _hp: 300
 --- !u!1 &4221466677627122877
 GameObject:
@@ -1396,7 +1565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ca56f6ce3840854cb65220eac709fee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spriterRenderer: {fileID: 4221466678550455285}
+  _spriteRenderer: {fileID: 4221466678550455285}
   _duration: 1
   <DeathCallback>k__BackingField:
     m_PersistentCalls:

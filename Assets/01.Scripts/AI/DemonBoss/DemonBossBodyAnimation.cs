@@ -10,6 +10,7 @@ public class DemonBossBodyAnimation : MonoBehaviour
     protected readonly int _hashFireBall = Animator.StringToHash("Fireball");
     protected readonly int _hashGenerateArmBool = Animator.StringToHash("GenerateArm");
     protected readonly int _hashNeutralBool = Animator.StringToHash("Neutral");
+    protected readonly int _hashDead = Animator.StringToHash("Dead");
 
     private SpriteRenderer _spriteRenderer;
 
@@ -17,6 +18,11 @@ public class DemonBossBodyAnimation : MonoBehaviour
     {
         _bodyAnimator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    public void PlayDeadAnimation()
+    {
+        _bodyAnimator.SetTrigger(_hashDead);
     }
 
     public void PlaySummonPortalAnimation()

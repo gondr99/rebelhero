@@ -211,13 +211,21 @@ public class Hand : MonoBehaviour, IHittable
 
         if (_hp <= 0)
         {
-            seq?.Kill();  //»ç¸Á½Ã ÁøÇàµÇ´ø ½ÃÄö½º´Â Å³
-            seq = null;
-
-            _hp = 0;
-            _isDead = true;
-            OnDead?.Invoke();
+            KillThisHand();
         }
+    }
+
+    public void KillThisHand()
+    {
+        //ÀÌ¹Ì Á×Àº ÆÈÀº ³»¹ö·ÁµÐ´Ù.
+        if (gameObject.activeSelf == false) return;
+
+        seq?.Kill();  //»ç¸Á½Ã ÁøÇàµÇ´ø ½ÃÄö½º´Â Å³
+        seq = null;
+
+        _hp = 0;
+        _isDead = true;
+        OnDead?.Invoke();
     }
 
     public void SetDeadParam()

@@ -64,6 +64,7 @@ public class Boss : MonoBehaviour, IHittable
     private int _hp;
     public int HP { get=> _hp; set=> _hp = value; }
     private bool _isDead = false;
+    public bool IsDead => _isDead;
 
     private HealthBar _neutralBar;
     private int _neutralCnt;
@@ -122,8 +123,19 @@ public class Boss : MonoBehaviour, IHittable
             {
                 _isDead = true;
                 OnDead?.Invoke();
+                KillThisBoss();
             }
         }        
     }
     
+    public void KillThisBoss()
+    {
+        StartCoroutine(KillDelay( 2f));
+    }
+
+    IEnumerator KillDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        this.gameObject.SetActive(false);
+    }
 }

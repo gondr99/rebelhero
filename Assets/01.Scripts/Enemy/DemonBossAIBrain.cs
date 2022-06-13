@@ -41,17 +41,19 @@ public class DemonBossAIBrain : EnemyAIBrain
     private Boss _boss;
 
     private SummonPortalAttack _summonPortalAttack; //포탈 공격은 패턴을 정할 때 필요하니 가져와둔다
-    private float _portalCoolTime = 10f;
     private float _currentPortalCoolTime = 0;
+
     //이쪽 파트는 나중에 SO로
     [SerializeField]
-    private float _dealTimer = 10f; //피격상태가 지속되는 시간
-    private float _generateTimerMax = 8f; //8초안에 무력화 
+    private float _dealTimer = 10f, _generateTimerMax = 8f, _neutralTime = 10f, _portalCoolTime = 10f;
+    //피격상태가 지속되는 시간, 8초안에 무력화, 무력화 시간
+
     private float _generateTimer = 0f;
     private bool _isNeutral = false;
     private int _handHP = 50;
     private int _bossHP = 500;
     private int _neutralCnt = 100; //100만큼의 무력 수치
+    
 
     protected override void Awake()
     {
@@ -114,7 +116,8 @@ public class DemonBossAIBrain : EnemyAIBrain
 
     protected override void Update()
     {
-        currentState.UpdateState();
+        //죽었다면 아무것도 하지 않는다.
+        if (_boss.IsDead == true) return;  
 
         if (_boss.State == Boss.BossState.Generate)
         {
@@ -145,12 +148,15 @@ public class DemonBossAIBrain : EnemyAIBrain
             //모든 적 사망처리 치트키
             OnKillAllEnemies?.Invoke();
         }
-        
+
+        currentState.UpdateState();
     }
 
     IEnumerator DelayForNeutral()
     {
-        yield return new WaitForSeconds(5f);
+        _phaseData.idleTime = _neutralTime + 0.5f; //무력시간만큼 아이들
+
+        yield return new WaitForSeconds(_neutralTime);
         SetInvincible();
         _isNeutral = false;
     }
