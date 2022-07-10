@@ -47,7 +47,8 @@ public class EnemyJumpAttack : EnemyAttack
         Vector3 cp2 = Quaternion.Euler(0, 0, angle) * (startControl * 3);  // 3/4ÁöÁ¡
 
 
-        _bezierPoints = DOCurve.CubicBezier.GetSegmentPointCloud(transform.position, transform.position + cp1, targetPos, transform.position + cp2, _bezeirResolution);
+        _bezierPoints = DOCurve.CubicBezier.GetSegmentPointCloud(transform.position,
+            transform.position + cp1, targetPos, transform.position + cp2, _bezeirResolution);
         _frameSpeed = _jumpSpeed / _bezeirResolution;
 
         StartCoroutine(JumpCoroutine());

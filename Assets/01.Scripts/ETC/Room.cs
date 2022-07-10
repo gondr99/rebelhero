@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Room : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class Room : MonoBehaviour
     public bool IsBossRoom => _isBossRoom;
     private Boss _roomBoss;
     public Boss RoomBoss => _roomBoss;
+    [SerializeField]
+    private Vector3 _camOffset = new Vector3(0, 3.5f,0);
 
     private Transform _startPosTrm;
     public Vector3 StartPosition
@@ -33,7 +36,7 @@ public class Room : MonoBehaviour
 
         if(_isBossRoom)
         {
-            UIManager.Instance.EnteringBossRoom(_roomBoss);
+            UIManager.Instance.EnteringBossRoom(_roomBoss, _camOffset);
         }
     }
 
@@ -54,11 +57,14 @@ public class Room : MonoBehaviour
         foreach (EnemySpawner es in _spawnerList)
         {
             //Æ÷Å»ÀÌ ´ÝÇûÀ» ¶§ ÇØÁÙ ÀÏÀ» ±â·Ï
-            es.OnClosePortal.AddListener(() =>
+            UnityAction closeAction = null;
+            closeAction = () =>
             {
                 _closedPortalCount++;
+                es.OnClosePortal.RemoveListener(closeAction);
                 CheckClear();
-            });
+            };
+            es.OnClosePortal.AddListener(closeAction);
         }
         _enemyList = new List<Enemy>();
         transform.Find("Enemies").GetComponentsInChildren<Enemy>(_enemyList);
@@ -66,11 +72,14 @@ public class Room : MonoBehaviour
 
         foreach (Enemy e in _enemyList)
         {
-            e.OnDie.AddListener(() =>
+            UnityAction dieAction = null;
+            dieAction = () =>
             {
                 _deadEnemyCount++;
                 CheckClear();
-            });
+                e.OnDie.RemoveListener(dieAction);
+            };
+            e.OnDie.AddListener(dieAction);
         }
 
         _doorList = new List<Door>();

@@ -4,44 +4,61 @@ using UnityEngine;
 
 public class ShockPunchAttack : DemonBossAttack
 {
-    private DemonBossAIBrain _brain;
+    
+    private bool _complete = false;
 
     protected override void Awake()
     {
         base.Awake();
-        _brain = transform.parent.GetComponent<DemonBossAIBrain>();
+       
     }
 
     public override void Attack(Action<bool> Callback)
     {
+        _complete = false;
         StartCoroutine(PunchSequence(Callback));
     }
 
     IEnumerator PunchSequence(Action<bool> Callback)
     {
 
-        if(_brain.LeftHand.gameObject.activeSelf == false && _brain.RightHand.gameObject.activeSelf == false)
+        if(_aiBrain.LeftHand.gameObject.activeSelf == false && _aiBrain.RightHand.gameObject.activeSelf == false)
         {
+            _complete = true;
             Callback?.Invoke(false);
             yield break;
         }    
 
-        if (_brain.LeftHand.gameObject.activeSelf == false)
+        if (_aiBrain.LeftHand.gameObject.activeSelf == false)
         {
-            _brain.RightHand.AttackShockSequence(_brain.target.position, () => Callback?.Invoke(true));
+            _aiBrain.RightHand.AttackShockSequence(_aiBrain.target.position, () => {
+                _complete = true;
+                Callback?.Invoke(true);
+            });
         }
         else 
         {
-            _brain.LeftHand.AttackShockSequence(_brain.target.position, null);
+            _aiBrain.LeftHand.AttackShockSequence(_aiBrain.target.position, null);
             yield return new WaitForSeconds(1f);
-            if(_brain.RightHand.gameObject.activeSelf == false)
+            if(_aiBrain.RightHand.gameObject.activeSelf == false)
             {
-                Callback?.Invoke(false);
+                _complete = true;
+                Callback?.Invoke(true);
             }
             else
             {
-                _brain.RightHand.AttackShockSequence(_brain.target.position, () => Callback?.Invoke(true));
+                _aiBrain.RightHand.AttackShockSequence(_aiBrain.target.position, () =>
+                {
+                    _complete = true;
+                    Callback?.Invoke(true);
+                });
             }
+        }
+
+        yield return new WaitForSeconds(2.5f);
+        if(_complete == false)
+        {
+            Callback?.Invoke(false);
         }
 
     }

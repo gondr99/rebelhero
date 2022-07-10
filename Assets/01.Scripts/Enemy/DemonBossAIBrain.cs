@@ -183,7 +183,7 @@ public class DemonBossAIBrain : EnemyAIBrain
         FieldInfo fInfo = typeof(AIDemonBossPhaseData).GetField(type.ToString(), BindingFlags.Public | BindingFlags.Instance);
         fInfo.SetValue(_phaseData, true);
         
-        OnFireBallCast?.Invoke(); //캐스팅 관련 애니메이션 있다면 재생
+        //OnFireBallCast?.Invoke(); //캐스팅 관련 애니메이션 있다면 재생
 
         EnemyAttackData atkData = null;
         _attackDic.TryGetValue(type,out atkData);

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using static Define;
+using Cinemachine;
 
 public class UIManager
 {
@@ -64,9 +66,13 @@ public class UIManager
             _toolTipSortingOrder = 0;
     }
 
-    public void EnteringBossRoom(Boss boss)
+    public void EnteringBossRoom(Boss boss, Vector3 offset)
     {
         //카메라 위치 조절
+        CinemachineTransposer transposer = VCam.GetCinemachineComponent<CinemachineTransposer>();
+        Vector3 target = transposer.m_FollowOffset + offset;
+        DOTween.To(() => transposer.m_FollowOffset, value => transposer.m_FollowOffset = value, target, 1f);
+
         //보스 체력바 등장
         Sequence seq = DOTween.Sequence();
         _bossHealthBar.SetHealthBar(0);

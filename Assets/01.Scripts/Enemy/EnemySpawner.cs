@@ -103,6 +103,9 @@ public class EnemySpawner : PoolableMono
 
     private void ClosePortal()
     {
+        if (_isOpen == false) return;
+        _isOpen = false;
+
         _animator.SetTrigger(_hashClose);
         _audioSoruce.clip = _closeClip;
         _audioSoruce.Play();
@@ -139,6 +142,8 @@ public class EnemySpawner : PoolableMono
         else
         {
             _spawnedEnemies.ForEach(x => x.DeadProcess()); //葛电 利 荤噶 贸府
+            ClosePortal();
+
         }
     }
 

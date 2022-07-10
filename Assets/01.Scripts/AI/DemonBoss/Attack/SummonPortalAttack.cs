@@ -7,8 +7,7 @@ using Random = UnityEngine.Random;
 
 public class SummonPortalAttack : DemonBossAttack
 {
-    private DemonBossAIBrain _brain;
-
+    
     [SerializeField]
     private int _summonCnt = 2;
     private Vector3[] _summonPoints;
@@ -18,7 +17,6 @@ public class SummonPortalAttack : DemonBossAttack
     protected override void Awake()
     {
         base.Awake();
-        _brain = transform.parent.GetComponent<DemonBossAIBrain>();
         Transform summonTrm = transform.Find("SummonArea");
 
         _summonPoints = new Vector3[summonTrm.childCount];

@@ -12,7 +12,8 @@ public class DemonAttackAction : DemonBossAIAction
     protected override void Awake()
     {
         base.Awake();
-        _fInfo = typeof(AIDemonBossPhaseData).GetField(_attackType.ToString(), BindingFlags.Public | BindingFlags.Instance);
+        _fInfo = typeof(AIDemonBossPhaseData).GetField(_attackType.ToString(), 
+                            BindingFlags.Public | BindingFlags.Instance);
     }
 
     public override void TakeAction()

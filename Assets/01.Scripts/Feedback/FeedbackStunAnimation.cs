@@ -24,8 +24,8 @@ public class FeedbackStunAnimation : Feedback
 
     public override void CreateFeedback()
     {
-        StartCoroutine(StunAnimationCoroutine());
         _spriteRenderer.enabled = true;
+        StartCoroutine(StunAnimationCoroutine());
     }
 
     IEnumerator StunAnimationCoroutine()

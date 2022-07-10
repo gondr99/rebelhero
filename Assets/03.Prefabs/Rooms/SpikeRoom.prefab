@@ -2379,6 +2379,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _roomCleared: 0
+  _isBossRoom: 0
+  _camOffset: {x: 0, y: 0, z: 0}
   _closedPortalCount: 0
 --- !u!1 &4147330929244095614
 GameObject:
@@ -6662,6 +6664,26 @@ PrefabInstance:
       propertyPath: _framePerTime
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 7153534446190032419, guid: d6b754b0b4bfa6b458d882818f66bcf6, type: 3}
+      propertyPath: <negativeResult>k__BackingField
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7153534446190032419, guid: d6b754b0b4bfa6b458d882818f66bcf6, type: 3}
+      propertyPath: <positiveResult>k__BackingField
+      value: 
+      objectReference: {fileID: 8244300647559586651}
+    - target: {fileID: 7153534446190032419, guid: d6b754b0b4bfa6b458d882818f66bcf6, type: 3}
+      propertyPath: <decisions>k__BackingField.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7153534446190032419, guid: d6b754b0b4bfa6b458d882818f66bcf6, type: 3}
+      propertyPath: <decisions>k__BackingField.Array.data[0]
+      value: 
+      objectReference: {fileID: 8284208208137078269}
+    - target: {fileID: 7153534446190032419, guid: d6b754b0b4bfa6b458d882818f66bcf6, type: 3}
+      propertyPath: <decisions>k__BackingField.Array.data[1]
+      value: 
+      objectReference: {fileID: 197074165040844496}
     - target: {fileID: 7153534447364181067, guid: d6b754b0b4bfa6b458d882818f66bcf6, type: 3}
       propertyPath: m_Name
       value: EnemyJumper
@@ -6716,15 +6738,56 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7153534448172379304, guid: d6b754b0b4bfa6b458d882818f66bcf6, type: 3}
       propertyPath: m_InstanceId
-      value: -2336
+      value: -73346
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7153534446190032418, guid: d6b754b0b4bfa6b458d882818f66bcf6, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d6b754b0b4bfa6b458d882818f66bcf6, type: 3}
+--- !u!1 &8244300646675087793 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7153534446190032417, guid: d6b754b0b4bfa6b458d882818f66bcf6, type: 3}
+  m_PrefabInstance: {fileID: 1238444197115787152}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &197074165040844496 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1410738870425778496, guid: d6b754b0b4bfa6b458d882818f66bcf6, type: 3}
+  m_PrefabInstance: {fileID: 1238444197115787152}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8244300646675087793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f4710ffbfb4fcc4193798025e87a6df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8244300647559586651 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7153534447041975499, guid: d6b754b0b4bfa6b458d882818f66bcf6, type: 3}
+  m_PrefabInstance: {fileID: 1238444197115787152}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 928f88ba807b2654d94bb51159ebccd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8244300647782120423 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7153534447364181111, guid: d6b754b0b4bfa6b458d882818f66bcf6, type: 3}
   m_PrefabInstance: {fileID: 1238444197115787152}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8284208208137078269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8244300646675087793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b710d9f6a59f6f45bdd7fb0d4160955, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <distance>k__BackingField: 7
 --- !u!1001 &7060043623216267632
 PrefabInstance:
   m_ObjectHideFlags: 0
